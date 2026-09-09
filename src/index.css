@@ -1,0 +1,217 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --brand: #E94B3C;
+    --brand-hover: #D4382A;
+    --brand-soft: rgba(233, 75, 60, 0.08);
+    --brand-border: rgba(233, 75, 60, 0.20);
+
+    --ink: #171A20;
+    --ink-soft: #28303A;
+
+    --background: #F5F4F1;
+    --surface: #FFFFFF;
+    --surface-muted: #EEEDE9;
+
+    --text-primary: #1C2533;
+    --text-secondary: #687282;
+    --text-muted: #9299A3;
+
+    --border: rgba(28, 37, 51, 0.10);
+    --border-strong: rgba(28, 37, 51, 0.18);
+
+    --radius-sm: 8px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 28px;
+  }
+
+  html, body {
+    width: 100%;
+    max-width: 100%;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--background);
+    color: var(--text-primary);
+    overflow-x: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    display: none;
+    width: 0px;
+    background: transparent;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL BUTTON MOTION
+   Baseline press feel for every raw <button> — filter chips, carousel arrows
+   and dots, tabs, accordion headers, close buttons, card-shaped course tiles.
+
+   Cascade note: the transition-property sits UNLAYERED on purpose. Most buttons
+   already carry a Tailwind `transition-colors`/`transition-all` utility, and a
+   rule inside @layer base loses to those, so transform changes would snap
+   instead of animating. Duration, easing and the :active transform stay in
+   @layer base so any component that sets its own still wins.
+   Opt a button out with data-no-motion.
+   ========================================================================== */
+button:not([data-no-motion]) {
+  transition-property: transform, box-shadow, background-color, border-color, color, opacity;
+}
+
+@layer base {
+  button:not([data-no-motion]) {
+    transition-duration: 180ms;
+    transition-timing-function: cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+
+  button:not([data-no-motion]):not(:disabled):active {
+    transform: scale(0.96);
+  }
+
+  button:disabled {
+    transform: none;
+    cursor: not-allowed;
+  }
+
+  /* Keyboard users get the affordance mouse users get on hover. */
+  button:not([data-no-motion]):focus-visible {
+    outline: 2px solid var(--brand);
+    outline-offset: 2px;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL REDUCED MOTION FALLBACK
+   ========================================================================== */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  button:active {
+    transform: none !important;
+  }
+}
+
+/* ==========================================================================
+   GLOBAL DESIGN SYSTEM UTILITIES
+   ========================================================================== */
+
+/* Typography Tokens */
+.cadd-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.6875rem; /* 11px */
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--brand);
+}
+
+.cadd-section-title {
+  font-size: 2rem; /* 32px */
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+@media (min-width: 640px) {
+  .cadd-section-title {
+    font-size: 2.5rem; /* 40px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .cadd-section-title {
+    font-size: 2.75rem; /* 44px */
+  }
+}
+
+.cadd-section-desc {
+  font-size: 0.9375rem; /* 15px */
+  line-height: 1.6;
+  color: var(--text-secondary);
+  font-weight: 400;
+}
+
+/* Container Token */
+.cadd-container {
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 640px) {
+  .cadd-container {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .cadd-container {
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/* Card System Tokens */
+.cadd-card {
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all 0.25s ease-in-out;
+}
+
+.cadd-card:hover {
+  border-color: rgba(233, 75, 60, 0.3);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.05);
+}
+
+.cadd-card-muted {
+  background-color: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
